@@ -1450,7 +1450,6 @@ type fishStatics struct {
 	f9  [2]float64 // A, p
 	f10 [2]float64
 	f11 [2]float64
-	f19 [2]float64
 }
 
 var officialSpeciesStatics = map[string]*fishStatics{
@@ -1458,48 +1457,48 @@ var officialSpeciesStatics = map[string]*fishStatics{
 		f13: map[int64]float64{2: 0.35}, f14: map[int64]float64{2: 2.0}, f15: map[int64]float64{2: 50.0},
 		f17: map[int64]float64{2: 0.8406126}, f20: 0.9978698,
 		f9: [2]float64{0.159245, 0.2656}, f10: [2]float64{0.153964, 0.2191},
-		f11: [2]float64{0.0991065, 0.2604}, f19: [2]float64{1.60587e-05, 0.7986},
+		f11: [2]float64{0.0991065, 0.2604},
 	},
 	"c.carp": {
 		f13: map[int64]float64{1: 0.25, 2: 0.35}, f14: map[int64]float64{1: 0.5, 2: 0.5},
 		f15: map[int64]float64{1: 4.0, 2: 4.0}, f17: map[int64]float64{1: 0.8406168, 2: 0.8406168},
 		f20: 0.9978698,
 		f9:  [2]float64{0.485972, 0.1722}, f10: [2]float64{0.215219, 0.2493},
-		f11: [2]float64{0.227746, 0.1307}, f19: [2]float64{3.18019e-05, 0.7000},
+		f11: [2]float64{0.227746, 0.1307},
 	},
 	"c.roach": {
 		f13: map[int64]float64{1: 0.30, 2: 0.15}, f14: map[int64]float64{1: 0.6, 2: 0.7},
 		f15: map[int64]float64{1: 3.0, 2: 15.0}, f17: map[int64]float64{1: 0.8406168, 2: 0.8406168},
 		f20: 0.9978698,
 		f9:  [2]float64{0.414243, 0.2656}, f10: [2]float64{0.369253, 0.2191},
-		f11: [2]float64{0.139494, 0.2604}, f19: [2]float64{1.78540e-05, 0.7986},
+		f11: [2]float64{0.139494, 0.2604},
 	},
 	"crucian": {
 		f13: map[int64]float64{1: 0.25, 2: 0.35}, f14: map[int64]float64{1: 0.5, 2: 0.5},
 		f15: map[int64]float64{1: 4.0, 2: 4.0}, f17: map[int64]float64{1: 0.8406168, 2: 0.8406168},
 		f20: 0.9978698,
 		f9:  [2]float64{0.452706, 0.1941}, f10: [2]float64{0.233332, 0.2355},
-		f11: [2]float64{0.206706, 0.1482}, f19: [2]float64{3.18023e-05, 0.7000},
+		f11: [2]float64{0.206706, 0.1482},
 	},
 	"e.chub": {
 		f13: map[int64]float64{1: 0.35, 2: 0.45}, f14: map[int64]float64{1: 0.6, 2: 0.6},
 		f15: map[int64]float64{1: 6.0, 2: 6.0}, f17: map[int64]float64{1: 0.8406126, 2: 0.7030094},
 		f20: 0.9978698,
 		f9:  [2]float64{2.77068, 0.0700}, f10: [2]float64{0.725204, 0.1019},
-		f11: [2]float64{0.27588, 0.1533}, f19: [2]float64{1.01401e-04, 0.5211},
+		f11: [2]float64{0.27588, 0.1533},
 	},
 	"perch": {
 		f13: map[int64]float64{1: 0.15, 2: 0.24}, f14: map[int64]float64{1: 0.4, 2: 0.5},
 		f15: map[int64]float64{1: 40.0, 2: 40.0}, f17: map[int64]float64{1: 0.8995978, 2: 0.8995978},
 		f20: 0.9979957,
 		f9:  [2]float64{0.589176, 0.2371}, f10: [2]float64{0.182802, 0.2936},
-		f11: [2]float64{0.202101, 0.2187}, f19: [2]float64{3.18016e-05, 0.7000},
+		f11: [2]float64{0.202101, 0.2187},
 	},
 	"s.bream": {
 		f13: map[int64]float64{2: 0.30}, f14: map[int64]float64{2: 1.2}, f15: map[int64]float64{2: 13.0},
 		f17: map[int64]float64{2: 0.8406126}, f20: 0.9978698,
 		f9: [2]float64{0.160663, 0.2656}, f10: [2]float64{0.119378, 0.2191},
-		f11: [2]float64{0.0792359, 0.2604}, f19: [2]float64{1.77994e-05, 0.7986},
+		f11: [2]float64{0.0792359, 0.2604},
 	},
 }
 
@@ -1512,7 +1511,7 @@ func staticPow(ap [2]float64, w float64) float64 {
 var fallbackFightStatic = map[int]float64{
 	9: 1.536152, 10: 1.028922, 11: 0.514461, 12: 0.0,
 	13: 0.35, 14: 0.5, 15: 4.0, 16: 0.833907,
-	17: 0.830302, 18: 1.0, 19: 0.002332, 20: 0.997804,
+	17: 0.830302, 18: 1.0, 20: 0.997804,
 }
 
 var fallbackCalWeights = []float64{94, 189, 212, 255, 331, 405}
@@ -1521,7 +1520,6 @@ var fallbackCalFields = map[int][]float64{
 	10: {0.9795, 1.1512, 1.1928, 1.2705, 1.3586, 1.3792},
 	11: {0.4442, 0.5396, 0.5627, 0.6058, 0.6552, 0.6675},
 	17: {0.6936, 0.8406, 0.8406, 0.8406, 0.8406, 0.8406},
-	19: {0.0006, 0.0012, 0.0014, 0.0015, 0.0018, 0.0021},
 }
 
 func fallbackFightStatics(weightG float64) map[int]float64 {
@@ -1615,7 +1613,7 @@ func (s *Server) fishInitialStaminaRatio() float64 {
 func (s *Server) buildFish27(f *RolledFish, hookGUID, gearGuid string) *proto.Value {
 	w := float64(f.WeightG)
 	st := officialSpeciesStatics[f.Species]
-	var f9, f10, f11, f12v, f13v, f14v, f15v, f16v, f17v, f18v, f19v, f20v float64
+	var f9, f10, f11, f12v, f13v, f14v, f15v, f16v, f17v, f18v, f20v float64
 	if st != nil {
 		f9 = staticPow(st.f9, w)
 		f10 = staticPow(st.f10, w)
@@ -1627,14 +1625,13 @@ func (s *Server) buildFish27(f *RolledFish, hookGUID, gearGuid string) *proto.Va
 		f16v = 1
 		f17v = gradeMapVal(st.f17, f.Grade)
 		f18v = 1
-		f19v = staticPow(st.f19, w)
 		f20v = st.f20
 	} else {
 		fb := fallbackFightStatics(w)
 		f9, f10, f11 = fb[9], fb[10], fb[11]
 		f12v, f13v, f14v, f15v = fb[12], fb[13], fb[14], fb[15]
 		f16v, f17v, f18v = fb[16], fb[17], fb[18]
-		f19v, f20v = fb[19], fb[20]
+		f20v = fb[20]
 	}
 	profile := s.fishFightProfileFor(f)
 	stamina := s.fishStaminaForProfile(f, profile)
@@ -1677,7 +1674,8 @@ func (s *Server) buildFish27(f *RolledFish, hookGUID, gearGuid string) *proto.Va
 		16: proto.F32(float32(f16v)),
 		17: proto.F32(float32(f17v)),
 		18: proto.F32(float32(f18v)),
-		19: proto.F32(float32(f19v)),
+		// 27.f19 是客户端行为 105 的自动上钩尝试启用位，不是随鱼重变化的曲线值。
+		19: proto.F32(1),
 		20: proto.F32(float32(f20v)),
 		21: s.buildFightCurvesForFish(f, pull, profile),
 		22: proto.Str(named),
