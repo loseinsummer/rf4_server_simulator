@@ -510,11 +510,46 @@ func (s *Session) Push4_22Full() {
 	s.Push(4, 22, proto.Args(proto.S("61"), items...))
 }
 
+// hookMountedFlag 中鱼挂竿运行位：官方真服抓包（2026-11-10/11）四钓法 9 次中鱼
+// 钩逐帧验证，hgaijieklek 一律 = 定义基值（钩 20992）| 1024。缺位时客户端钩
+// 实体不进搏鱼态，表现为浮漂无咬钩演出、左下角无搏鱼指示。
+// 钩推送形状随钓组而变：单钩/单钩组=裸钩 args(61)[131]（沉底/浮钓/海钓单钩），
+// 串钩组/拟饵 rig=ioombppcnlh 嵌套容器（海钓串钩、路亚）；flags 语义同构。
+const hookMountedFlag = uint64(1024)
+
+// markHookMounted 递归把树中所有钩对象（agedjipcnpe）的 flags 补挂竿位，
+// 兼容裸钩（沉底/浮钓/海钓单钩）与容器嵌套钩（海钓串钩/路亚 ioombppcnlh）两种形状。
+func markHookMounted(v *proto.Value) {
+	if v == nil {
+		return
+	}
+	if v.Class == "agedjipcnpe" {
+		if idx := fieldIdxByCS("agedjipcnpe", csStateEnum); idx >= 0 && idx < len(v.Fields) &&
+			v.Fields[idx].Num != nil {
+			*v.Fields[idx].Num |= hookMountedFlag
+		}
+	}
+	for _, f := range v.Fields {
+		if f.Val != nil {
+			markHookMounted(f.Val)
+		}
+	}
+	for _, it := range v.Items {
+		markHookMounted(it)
+	}
+}
+
 // Push4_22Hook 刺中后单钩同步：args("61")[131钩]。
-func (s *Session) Push4_22Hook(gears ...string) {
+// mounted=true 时钩 flags 附挂竿位（官方口径：四钓法中鱼钩均带挂竿位）。
+func (s *Session) Push4_22Hook(mounted bool, gears ...string) {
 	items, err := s.Srv.buildFightItems(s.pushCtx(), s.Userid, false, gears...)
 	if err != nil || len(items) == 0 {
 		return
+	}
+	if mounted {
+		for _, it := range items {
+			markHookMounted(it)
+		}
 	}
 	s.Push(4, 22, proto.Args(proto.S("61"), items...))
 }

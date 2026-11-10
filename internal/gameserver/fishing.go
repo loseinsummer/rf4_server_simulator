@@ -1771,7 +1771,8 @@ func (s *Session) Push14_14(f *RolledFish, hookGUID, gearGuid string) bool {
 }
 
 // marineHookConfirm 海钓额外挂钩推送开关，tunables 键 marine_hook_confirm。
-// 真服成功抓包只有 14/14 -> 14/11 -> 14/8，没有 14/15 或中钩时的 4/22。
+// 早期抓包曾记"真服中钩时无 4/22"；2026-11-11 海钓抓包证实 14/11 后有
+// 钩 4/22（串钩=嵌套容器、单钩=裸钩，挂竿位），现 14/11 无条件补推。
 // ⚠️ 客户端实证（gdpondeemjf.pagenilfpij，见 specs/changes/nibble-veto-fish-leave）：
 // 命令 14/15 是"鱼离场"分支——开启本开关推送的 14/15 会把
 // 刚上钩的海钓鱼直接放走，而不是"确认挂钩"。保持默认关闭。
@@ -1779,9 +1780,9 @@ func (s *Session) marineHookConfirm() bool {
 	return s.Srv.tunableF("marine_hook_confirm", 0) != 0
 }
 
-// marineHookItemSync 是否在 14/11/14/9 后补发单钩 4/22。
-// 真服抓包里没有单独的挂钩 4/22，但私服的 14/1/2 钓组树可能缺少客户端
-// 启动搏鱼所需的 mounted hook，因此单独保留开关做实测。
+// marineHookItemSync 是否在 14/9 后补发单钩 4/22（14/11 现已无条件补推）。
+// 旧注释称真服无挂钩 4/22，2026-11-11 海钓抓包推翻；本开关仅剩
+// 14/9 场景官方未见对应推送，保持默认关闭。
 func (s *Session) marineHookItemSync() bool {
 	return s.Srv.tunableF("marine_hook_item_sync", 0) != 0
 }

@@ -1265,7 +1265,7 @@ func hFishingPull(ctx *Ctx) ([]byte, bool) {
 			ctx.Log.Info("14/9 海钓抬竿只走真服 14/11 路径，跳过 14/15/4/22")
 		}
 		if ctx.Sess.marineHookItemSync() {
-			ctx.Sess.Push4_22Hook(gear)
+			ctx.Sess.Push4_22Hook(false, gear)
 		}
 		ctx.Log.Info("14/9 海钓抬竿确认", "rod", shortGUID(gear), "fish", shortGUID(pending.FishGUID),
 			"rig_type", rigType, "14/15", bound)
@@ -1341,18 +1341,15 @@ func hFishingHooked(ctx *Ctx) ([]byte, bool) {
 		srv.scheduleBiteForHooked(ctx.Sess, st)
 	}
 	if pending != nil && marineRigType(rigType) && !wasHooked {
-		if !ctx.Sess.marineHookConfirm() {
-			if !ctx.Sess.marineHookItemSync() {
-				ctx.Log.Info("14/11 只走真服已证实路径，跳过 14/15/4/22")
-			}
-		} else {
+		// 官方抓包（2026-11-11）海钓 14/11 后有钩 4/22（串钩=嵌套容器、
+		// 单钩=裸钩，挂竿位同四钓法口径）；14/15 仍是"鱼离场"分支，继续默认不推。
+		if ctx.Sess.marineHookConfirm() {
 			ctx.Sess.Push14_15(gear, pending.FishGUID)
 		}
-		if ctx.Sess.marineHookItemSync() {
-			ctx.Sess.Push4_22Hook(gear)
-		}
+		ctx.Sess.Push4_22Hook(true, gear)
 	} else {
-		ctx.Sess.Push4_22Hook(gear)
+		// 挂竿位四钓法通用（官方抓包沉底/浮钓/海钓/路亚中鱼钩 flags 均含 1024）。
+		ctx.Sess.Push4_22Hook(true, gear)
 	}
 	if announce {
 		srv.notifyFishHooked(ctx.Sess, hookedFish, gear)
