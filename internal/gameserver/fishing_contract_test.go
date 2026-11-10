@@ -84,3 +84,21 @@ func TestFish27UnknownSpeciesFallback(t *testing.T) {
 		t.Fatalf("未知鱼 f20=%f，期望0.997804", got)
 	}
 }
+
+// TestFish27EnablesClientAutoHookAction 验证 27.f19 开启客户端行为 105 的
+// 自动上钩尝试。已校准鱼种和回退鱼种必须使用同一协议语义。
+func TestFish27EnablesClientAutoHookAction(t *testing.T) {
+	srv := NewServer(config.Game{Tunnel: config.Tunnel{PSK: "contract"}}, logging.Discard(), nil)
+	for _, species := range []string{"c.roach", "not_in_calib"} {
+		f := &RolledFish{
+			FishGUID: "66666666666666666666666666666666",
+			Species:  species,
+			Grade:    1,
+			WeightG:  186,
+			LengthM:  0.1981,
+		}
+		if got := f32At(srv.buildFish27(f, "", ""), 19); got != 1 {
+			t.Fatalf("%s 的 27.f19=%f，期望为 1 以启用客户端自动上钩", species, got)
+		}
+	}
+}
